@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>RapidRescue</title>
+
+    <!-- CONNECT CSS -->
+    <link rel="stylesheet" href="index.css">
+
+    <!-- Leaflet Map CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+</head>
+
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            <span>✚</span> RapidRescue
+        </div>
+
+        <button class="top-call-button"
+                onclick="callEmergency()">
+
+            📞 112
+
+        </button>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main>
+
+
+        <!-- ================= HOME SCREEN ================= -->
+
+        <section id="homeScreen"
+                 class="screen active">
+
+            <div class="home-container">
+
+                <div class="emergency-label">
+                    ● EMERGENCY SERVICE
+                </div>
+
+
+                <h1>
+                    Get help.
+                    <br>
+                    <span>Right now.</span>
+                </h1>
+
+
+                <p class="home-description">
+
+                    Request an ambulance quickly
+                    and track it in real time.
+
+                </p>
+
+
+                <button class="emergency-button"
+                        onclick="startEmergency()">
+
+                    <span class="ambulance-icon">
+                        🚑
+                    </span>
+
+                    <span>
+                        REQUEST
+                        <br>
+                        AMBULANCE
+                    </span>
+
+                </button>
+
+
+                <button class="secondary-button"
+                        onclick="callEmergency()">
+
+                    📞 Call Emergency Services — 112
+
+                </button>
+
+            </div>
+
+
+            <div class="steps">
+
+                <div class="step">
+
+                    <b>1</b>
+
+                    <span>
+                        Share location
+                    </span>
+
+                </div>
+
+
+                <div class="step">
+
+                    <b>2</b>
+
+                    <span>
+                        Answer questions
+                    </span>
+
+                </div>
+
+
+                <div class="step">
+
+                    <b>3</b>
+
+                    <span>
+                        Track ambulance
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= LOCATION SCREEN ================= -->
+
+        <section id="locationScreen"
+                 class="screen">
+
+            <div class="page-title">
+
+                <button onclick="goHome()">
+                    ←
+                </button>
+
+                <div>
+
+                    <small>
+                        STEP 1
+                    </small>
+
+                    <h2>
+                        Your Location
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- MAP -->
+
+            <div id="map"></div>
+
+
+            <!-- LOCATION INFORMATION -->
+
+            <div class="location-card">
+
+                <div class="location-icon">
+                    📍
+                </div>
+
+                <div>
+
+                    <b id="locationStatus">
+                        Detecting location...
+                    </b>
+
+                    <small id="coordinates">
+                        Please wait...
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <button class="primary-button"
+                    onclick="getCurrentLocation()">
+
+                📍 Use My Current Location
+
+            </button>
+
+
+            <div class="divider">
+                OR ENTER LOCATION MANUALLY
+            </div>
+
+
+            <div class="manual-location">
+
+                <input
+                    id="latitude"
+                    type="number"
+                    step="any"
+                    placeholder="Latitude"
+                    value="22.5726">
+
+
+                <input
+                    id="longitude"
+                    type="number"
+                    step="any"
+                    placeholder="Longitude"
+                    value="88.3639">
+
+            </div>
+
+
+            <button class="secondary-button"
+                    onclick="useManualLocation()">
+
+                Use Manual Location
+
+            </button>
+
+
+            <button class="next-button"
+                    onclick="goToEmergencyDetails()">
+
+                Continue →
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ================= EMERGENCY DETAILS ================= -->
+
+        <section id="detailsScreen"
+                 class="screen">
+
+            <div class="page-title">
+
+                <button onclick="showScreen('locationScreen')">
+                    ←
+                </button>
+
+                <div>
+
+                    <small>
+                        STEP 2
+                    </small>
+
+                    <h2>
+                        Emergency Details
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- AI ASSISTANT -->
+
+            <div class="ai-box">
+
+                <div class="ai-icon">
+                    🤖
+                </div>
+
+                <div>
+
+                    <b>
+                        RapidRescue Emergency Assistant
+                    </b>
+
+                    <p>
+
+                        I am not a doctor.
+                        I only help prioritize the request.
+                        Serious emergencies need immediate
+                        professional medical attention.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <h3>
+                What happened?
+            </h3>
+
+
+            <!-- EMERGENCY TYPES -->
+
+            <div class="emergency-types">
+
+
+                <button onclick="selectEmergencyType(this, 'Accident')">
+
+                    🚗
+
+                    <span>
+                        Accident
+                    </span>
+
+                </button>
+
+
+                <button onclick="selectEmergencyType(this, 'Heart Problem')">
+
+                    ❤️
+
+                    <span>
+                        Heart Problem
+                    </span>
+
+                </button>
+
+
+                <button onclick="selectEmergencyType(this, 'Breathing Problem')">
+
+                    🫁
+
+                    <span>
+                        Breathing Problem
+                    </span>
+
+                </button>
+
+
+                <button onclick="selectEmergencyType(this, 'Unconscious Person')">
+
+                    😵
+
+                    <span>
+                        Unconscious Person
+                    </span>
+
+                </button>
+
+
+                <button onclick="selectEmergencyType(this, 'Other')">
+
+                    ⚠️
+
+                    <span>
+                        Other
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- DESCRIPTION -->
+
+            <label class="input-label">
+
+                Describe the situation
+
+                <textarea
+                    id="description"
+                    placeholder="Briefly tell us what happened..."></textarea>
+
+            </label>
+
+
+            <!-- QUESTIONS -->
+
+            <div class="question">
+
+                <b>
+                    Is the person conscious?
+                </b>
+
+                <div class="yes-no">
+
+                    <button onclick="answerQuestion('conscious', 'yes', this)">
+                        Yes
+                    </button>
+
+                    <button onclick="answerQuestion('conscious', 'no', this)">
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <b>
+                    Is the person breathing?
+                </b>
+
+                <div class="yes-no">
+
+                    <button onclick="answerQuestion('breathing', 'yes', this)">
+                        Yes
+                    </button>
+
+                    <button onclick="answerQuestion('breathing', 'no', this)">
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <b>
+                    Is there severe bleeding?
+                </b>
+
+                <div class="yes-no">
+
+                    <button onclick="answerQuestion('bleeding', 'yes', this)">
+                        Yes
+                    </button>
+
+                    <button onclick="answerQuestion('bleeding', 'no', this)">
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- PRIORITY -->
+
+            <div id="priorityBox"
+                 class="priority normal">
+
+                <span>
+                    AI PRIORITY
+                </span>
+
+                <strong id="priorityText">
+                    Normal
+                </strong>
+
+                <small>
+                    This is a prototype priority system,
+                    not a medical diagnosis.
+                </small>
+
+            </div>
+
+
+            <button class="next-button"
+                    onclick="confirmAmbulanceRequest()">
+
+                🚑 Confirm Emergency Request
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ================= TRACKING SCREEN ================= -->
+
+        <section id="trackingScreen"
+                 class="screen">
+
+            <div class="tracking-header">
+
+                <div>
+
+                    <span class="live-dot">
+                        ●
+                    </span>
+
+                    <b id="trackingStatus">
+                        Ambulance is on the way
+                    </b>
+
+                    <small id="requestId">
+                        Request #RR0000
+                    </small>
+
+                </div>
+
+
+                <strong id="trackingPriority">
+                    NORMAL
+                </strong>
+
+            </div>
+
+
+            <!-- TRACKING MAP -->
+
+            <div id="trackingMap"></div>
+
+
+            <!-- AMBULANCE CARD -->
+
+            <div class="ambulance-card">
+
+                <div class="ambulance-info">
+
+                    <div class="ambulance-icon-small">
+                        🚑
+                    </div>
+
+
+                    <div>
+
+                        <b id="ambulanceId">
+                            RR-104
+                        </b>
+
+                        <small>
+                            Ambulance
+                        </small>
+
+                    </div>
+
+
+                    <span class="live">
+                        ● LIVE
+                    </span>
+
+                </div>
+
+
+                <!-- METRICS -->
+
+                <div class="metrics">
+
+                    <div>
+
+                        <b id="distance">
+                            -- km
+                        </b>
+
+                        <span>
+                            Distance
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <b id="eta">
+                            -- min
+                        </b>
+
+                        <span>
+                            ETA
+                        </span>
+
+                    </div>
+
+
+                    <div>
+
+                        <b id="trackingPriority2">
+                            NORMAL
+                        </b>
+
+                        <span>
+                            Priority
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <button class="cancel-button"
+                        onclick="cancelRequest()">
+
+                    Cancel Ambulance Request
+
+                </button>
+
+            </div>
+
+
+            <button class="secondary-button"
+                    onclick="callEmergency()">
+
+                📞 Emergency Call — 112
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ================= COMPLETED SCREEN ================= -->
+
+        <section id="completedScreen"
+                 class="screen completed">
+
+            <div id="completedIcon"
+                 class="success-icon">
+
+                ✓
+
+            </div>
+
+
+            <h2 id="completedTitle">
+                Emergency Completed
+            </h2>
+
+
+            <p id="completedMessage">
+
+                The ambulance has arrived.
+                We hope you are safe.
+
+            </p>
+
+
+            <button class="primary-button"
+                    onclick="resetApplication()">
+
+                Back to Home
+
+            </button>
+
+
+            <button class="secondary-button"
+                    onclick="callEmergency()">
+
+                📞 Call 112
+
+            </button>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= BOTTOM NAVIGATION ================= -->
+
+    <nav>
+
+        <button onclick="goHome()">
+
+            🏠
+
+            <span>
+                Home
+            </span>
+
+        </button>
+
+
+        <button onclick="startEmergency()">
+
+            🚑
+
+            <span>
+                Request
+            </span>
+
+        </button>
+
+
+        <button onclick="showSettings()">
+
+            ⚙️
+
+            <span>
+                Settings
+            </span>
+
+        </button>
+
+    </nav>
+
+
+
+    <!-- Leaflet JavaScript -->
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <!-- CONNECT JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
